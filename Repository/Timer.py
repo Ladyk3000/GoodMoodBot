@@ -4,10 +4,10 @@ from random import randrange
 
 class Timer:
     def __init__(self):
-        self.__reset_time = '8:28'
+        self.__reset_time = '0:00'
         self.__sending_intervals = {'Утром': ['7:00', '9:0'],
                                     'Днем': ['12:00', '14:00'],
-                                    'Вечером': ['19:0', '21:00']}
+                                    'Вечером': ['19:00', '21:00']}
         self.__send_times = self.__generate_send_times()
         self.sent_today = 0
         self.__sent_max = len(self.__send_times)
