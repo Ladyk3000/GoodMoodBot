@@ -13,9 +13,9 @@ def main():
         current_interval = timer.check_time()
         print(current_interval)
         if current_interval:
-            timer.sent_today += 1
             telebot.send_messages(current_interval)
-        time.sleep(600)
+            timer.sent_today += 1
+        time.sleep(10)
 
 
 if __name__ == "__main__":

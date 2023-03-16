@@ -4,10 +4,10 @@ from random import randrange
 
 class Timer:
     def __init__(self):
-        self.__reset_time = '00:00'
-        self.__sending_intervals = {'Утром': ['7:00', '10:00'],
-                                    'Днем': ['11:12', '11:15'],
-                                    'Вечером': ['19:00', '21:00']}
+        self.__reset_time = '8:28'
+        self.__sending_intervals = {'Утром': ['7:00', '9:0'],
+                                    'Днем': ['12:00', '14:00'],
+                                    'Вечером': ['19:0', '21:00']}
         self.__send_times = self.__generate_send_times()
         self.sent_today = 0
         self.__sent_max = len(self.__send_times)
@@ -16,6 +16,7 @@ class Timer:
         tmp = {}
         for interval, times in self.__sending_intervals.items():
             tmp[interval] = self.__get_random_time(times[0], times[1])
+        print(f'Times to send: {tmp}')
         return tmp
 
     def __get_random_time(self, start_time, end_time):
@@ -48,4 +49,4 @@ class Timer:
         return None
 
     def __is_new_day(self):
-        return self.sent_today == self.__sent_max and datetime.now() > self.__str_to_time(self.__reset_time)
+        return datetime.now() > self.__str_to_time(self.__reset_time)
