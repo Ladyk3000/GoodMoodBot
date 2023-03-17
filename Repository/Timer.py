@@ -41,13 +41,13 @@ class Timer:
     def check_time(self):
         if self.__is_new_day():
             self.__generate_send_times()
-        if datetime.now(self.__timezone) > self.__send_times['Утром'] and self.sent_today == 0:
+        if datetime.now(self.__timezone).timestamp() > self.__send_times['Утром'].timestamp() and self.sent_today == 0:
             return 'Утром'
-        elif datetime.nowself.__timezone() > self.__send_times['Днем'] and self.sent_today <= 1:
+        elif datetime.now(self.__timezone).timestamp() > self.__send_times['Днем'].timestamp() and self.sent_today <= 1:
             return 'Днем'
-        elif datetime.now(self.__timezone) > self.__send_times['Вечером'] and self.sent_today <= 2:
+        elif datetime.now(self.__timezone).timestamp() > self.__send_times['Вечером'].timestamp() and self.sent_today <= 2:
             return 'Вечером'
         return None
 
     def __is_new_day(self):
-        return datetime.now(self.__timezone) > self.__str_to_time(self.__reset_time)
+        return datetime.now().timestamp() > self.__str_to_time(self.__reset_time).timestamp()
