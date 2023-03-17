@@ -50,7 +50,6 @@ class Bot:
                                   reply_markup=telebot.types.ReplyKeyboardRemove())
             self.__bot_users[message.from_user.id] = message.text
             self.__bot_usernames[message.from_user.id] = message.from_user.first_name
-            print(f'Usernames: {self.__bot_usernames}')
             print(f'Users: {self.__bot_users}')
 
     def start(self):

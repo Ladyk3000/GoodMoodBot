@@ -11,10 +11,10 @@ def main():
     telebot = Bot()
     telebot.start()
     while True:
-        current_interval = timer.check_time()
-        print(current_interval)
-        if current_interval:
-            telebot.send_messages(current_interval)
+        now, current_int = timer.check_time()
+        print(now, current_int)
+        if current_int:
+            telebot.send_messages(current_int)
             timer.sent_today += 1
         time.sleep(60)
 

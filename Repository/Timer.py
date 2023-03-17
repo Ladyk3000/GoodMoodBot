@@ -42,12 +42,12 @@ class Timer:
         if self.__is_new_day():
             self.__generate_send_times()
         if datetime.now(self.__timezone).timestamp() > self.__send_times['Утром'].timestamp() and self.sent_today == 0:
-            return 'Утром'
+            return datetime.now(self.__timezone), 'Утром'
         elif datetime.now(self.__timezone).timestamp() > self.__send_times['Днем'].timestamp() and self.sent_today <= 1:
-            return 'Днем'
+            return datetime.now(self.__timezone), 'Днем'
         elif datetime.now(self.__timezone).timestamp() > self.__send_times['Вечером'].timestamp() and self.sent_today <= 2:
-            return 'Вечером'
-        return None
+            return datetime.now(self.__timezone), 'Вечером'
+        return datetime.now(self.__timezone).timestamp(), None
 
     def __is_new_day(self):
         return datetime.now().timestamp() > self.__str_to_time(self.__reset_time).timestamp()
