@@ -1,16 +1,17 @@
 from datetime import datetime, timedelta
 from random import randrange
-
+from pytz import timezone
 
 class Timer:
     def __init__(self):
-        self.__reset_time = '0:00'
+        self.__reset_time = '23:58'
         self.__sending_intervals = {'Утром': ['7:00', '9:0'],
                                     'Днем': ['12:00', '14:00'],
                                     'Вечером': ['19:00', '21:00']}
         self.__send_times = self.__generate_send_times()
         self.sent_today = 0
         self.__sent_max = len(self.__send_times)
+        self.__timezone = timezone('Europe/Moscow')
 
     def __generate_send_times(self):
         tmp = {}
@@ -40,13 +41,13 @@ class Timer:
     def check_time(self):
         if self.__is_new_day():
             self.__generate_send_times()
-        if datetime.now() > self.__send_times['Утром'] and self.sent_today == 0:
+        if datetime.now(self.__timezone) > self.__send_times['Утром'] and self.sent_today == 0:
             return 'Утром'
-        elif datetime.now() > self.__send_times['Днем'] and self.sent_today <= 1:
+        elif datetime.nowself.__timezone() > self.__send_times['Днем'] and self.sent_today <= 1:
             return 'Днем'
-        elif datetime.now() > self.__send_times['Вечером'] and self.sent_today <= 2:
+        elif datetime.now(self.__timezone) > self.__send_times['Вечером'] and self.sent_today <= 2:
             return 'Вечером'
         return None
 
     def __is_new_day(self):
-        return datetime.now() > self.__str_to_time(self.__reset_time)
+        return datetime.now(self.__timezone) > self.__str_to_time(self.__reset_time)
