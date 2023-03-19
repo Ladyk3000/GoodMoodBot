@@ -9,16 +9,20 @@ from threading import Thread
 
 load_dotenv()
 
+TIMES_TYPE = ['Утром', 'Днем', 'Вечером']
+WOW_WORDS = ['Супер', 'Волшебно', 'Класс']
+HEART_ICONS = ['❤️', '💕', '💖']
+
 
 class Bot:
-    def __init__(self, key=os.getenv('BOT-TOKEN')):
+    def __init__(self, key=os.getenv('BOT-TOKEN'), times_type=TIMES_TYPE, wow_words=WOW_WORDS, heart_icons=HEART_ICONS):
         self.bot = telebot.TeleBot(key)
         self.__bot_users = {}
         self.__bot_usernames = {}
 
-        self.__times_type = ['Утром', 'Днем', 'Вечером']
-        self.__wow_words = ['Супер', 'Волшебно', 'Класс']
-        self.__heart_icons = ['❤️', '💕', '💖']
+        self.__times_type = times_type
+        self.__wow_words = wow_words
+        self.__heart_icons = heart_icons
 
         @self.bot.message_handler(commands=['start'])
         def start(message):
@@ -28,10 +32,6 @@ class Bot:
             self.bot.send_message(message.from_user.id,
                                   "👋 Привет! Я твой бот-помощник, который поможет тебе сохранить хорошее настроение 😊",
                                   reply_markup=markup)
-
-        @self.bot.message_handler(commands=['help'])
-        def print_hi(message):
-            self.bot.send_message(message.chat.id, 'help')
 
         @self.bot.message_handler(func=lambda message: message.text == '👋 Поздороваться')
         def get_text_messages(message):

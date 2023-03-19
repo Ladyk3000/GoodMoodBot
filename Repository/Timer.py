@@ -33,7 +33,7 @@ class Timer:
         time_obj = datetime.strptime(str_time, '%H:%M')
         time_to_eq = datetime(datetime.today().year,
                               datetime.today().month,
-                              datetime.today().day,
+                              datetime.today().day + 1,
                               time_obj.hour,
                               time_obj.minute, 0)
         return self.__tz.localize(time_to_eq)
@@ -41,12 +41,6 @@ class Timer:
     def check_time(self):
         if self.__is_new_day():
             self.__generate_send_times()
-
-        print(self.__send_times['Днем'].timestamp())
-        print(datetime.now(self.__tz).timestamp())
-
-        print(self.__send_times['Днем'])
-        print(datetime.now(self.__tz))
 
         if datetime.now(self.__tz).timestamp() > self.__send_times['Утром'].timestamp() and self.sent_today == 0:
             return datetime.now(self.__tz), 'Утром'
