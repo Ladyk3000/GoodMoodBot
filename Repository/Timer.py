@@ -6,13 +6,13 @@ from pytz import timezone
 class Timer:
     def __init__(self):
         self.__tz = timezone('Europe/Moscow')
-        self.__reset_time = '23:58'
         self.__sending_intervals = {'Утром': ['7:00', '9:00'],
                                     'Днем': ['12:00', '14:00'],
                                     'Вечером': ['19:00', '21:00']}
+        self.__reset_time = self.__str_to_time('23:48')
         self.__send_times = self.__generate_send_times()
-        self.sent_today = 0
         self.__sent_max = len(self.__send_times)
+        self.sent_today = 0
 
     def __generate_send_times(self):
         tmp = {}
@@ -33,7 +33,7 @@ class Timer:
         time_obj = datetime.strptime(str_time, '%H:%M')
         time_to_eq = datetime(datetime.today().year,
                               datetime.today().month,
-                              datetime.today().day + 1,
+                              datetime.today().day,
                               time_obj.hour,
                               time_obj.minute, 0)
         return self.__tz.localize(time_to_eq)
@@ -51,4 +51,8 @@ class Timer:
         return datetime.now(self.__tz), None
 
     def __is_new_day(self):
-        return datetime.now().timestamp() > self.__str_to_time(self.__reset_time).timestamp()
+        if datetime.now().timestamp() > self.__reset_time.timestamp():
+            self.__reset_time += timedelta(days=1)
+            print(f'new date:{self.__reset_time}')
+            return True
+        return False

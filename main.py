@@ -15,7 +15,7 @@ def main():
         if current_interval:
             telegram_bot.send_messages(current_interval)
             timer.sent_today += 1
-        time.sleep(60)
+        time.sleep(600)
 
 
 if __name__ == "__main__":

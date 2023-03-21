@@ -60,7 +60,7 @@ class Bot:
         users_to_sent = [key for key, val in self.__bot_users.items() if val == interval]
         picture_url = self.__get_image_url()
         for user_id in users_to_sent:
-            text = f'{self.__bot_usernames[user_id]} ты лучший!'
+            text = f'{self.__bot_usernames[user_id]} ты лучше всех!'
             self.bot.send_photo(user_id, picture_url, caption=text)
 
     @staticmethod
