@@ -6,20 +6,12 @@ from pytz import timezone
 class Timer:
     def __init__(self):
         self.__tz = timezone('Europe/Moscow')
-        self.__sending_intervals = {'Утром': ['7:00', '9:00'],
-                                    'Днем': ['12:00', '14:00'],
-                                    'Вечером': ['19:00', '21:00']}
         self.__reset_time = self.__str_to_time('23:48')
-        self.__send_times = self.__generate_send_times()
-        self.__sent_max = len(self.__send_times)
-        self.sent_today = 0
+        self.__sent_max = 3
+        self.sent_morning = False
+        self.sent_day = False
+        self.sent_evening = False
 
-    def __generate_send_times(self):
-        tmp = {}
-        for interval, times in self.__sending_intervals.items():
-            tmp[interval] = self.__get_random_time(times[0], times[1])
-        print(f'Times to send: {tmp}')
-        return tmp
 
     def __get_random_time(self, start_time, end_time):
         start = self.__str_to_time(start_time)
@@ -39,20 +31,22 @@ class Timer:
         return self.__tz.localize(time_to_eq)
 
     def check_time(self):
-        if self.__is_new_day():
-            self.__generate_send_times()
+        self.__is_new_day()
 
-        if datetime.now(self.__tz).timestamp() > self.__send_times['Утром'].timestamp() and self.sent_today == 0:
+        if self.__str_to_time('7:00').timestamp() <= datetime.now(self.__tz).timestamp() <= self.__str_to_time('9:00').timestamp() and not self.sent_morning:
+            self.sent_morning = True
             return datetime.now(self.__tz), 'Утром'
-        elif datetime.now(self.__tz).timestamp() > self.__send_times['Днем'].timestamp() and self.sent_today <= 1:
+        elif self.__str_to_time('12:00').timestamp() <= datetime.now(self.__tz).timestamp() <= self.__str_to_time('14:00').timestamp() and not self.sent_day:
+            self.sent_day = True
             return datetime.now(self.__tz), 'Днем'
-        elif datetime.now(self.__tz).timestamp() > self.__send_times['Вечером'].timestamp() and self.sent_today <= 2:
+        elif self.__str_to_time('19:00').timestamp() <= datetime.now(self.__tz).timestamp() <= self.__str_to_time('21:00').timestamp() and not self.sent_evening:
+            self.sent_evening = True
             return datetime.now(self.__tz), 'Вечером'
         return datetime.now(self.__tz), None
 
     def __is_new_day(self):
         if datetime.now().timestamp() > self.__reset_time.timestamp():
             self.__reset_time += timedelta(days=1)
-            print(f'new date:{self.__reset_time}')
+            self.sent_morning = self.sent_day = self.sent_evening = False
             return True
         return False

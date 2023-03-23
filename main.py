@@ -14,7 +14,6 @@ def main():
         print(now, current_interval)
         if current_interval:
             telegram_bot.send_messages(current_interval)
-            timer.sent_today += 1
         time.sleep(600)
 
 

@@ -61,12 +61,11 @@ class Bot:
 
     def send_messages(self, interval):
         bot_users = self.__read_users()
-        print(bot_users)
-        users_to_sent = [key[1] for key, val in bot_users.items() if val == interval]
+        users_to_sent = [key for key, val in bot_users.items() if val[1] == interval]
         picture_url = self.__get_image_url()
         for user_id in users_to_sent:
             text = f'{bot_users[user_id][0]} ты лучше всех!'
-            self.bot.send_photo(user_id, picture_url, caption=text)
+            self.bot.send_photo(int(user_id), picture_url, caption=text)
 
     def __read_users(self):
         users = {}
